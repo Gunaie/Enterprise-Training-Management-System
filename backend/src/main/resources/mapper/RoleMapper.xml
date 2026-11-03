@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eduforge.training.mapper.RoleMapper">
+    <select id="findAll" resultType="com.eduforge.training.pojo.Role">
+        SELECT * FROM role WHERE status = 1
+    </select>
+
+    <select id="findById" resultType="com.eduforge.training.pojo.Role">
+        SELECT * FROM role WHERE id = #{id}
+    </select>
+
+    <select id="findByCode" resultType="com.eduforge.training.pojo.Role">
+        SELECT * FROM role WHERE code = #{code}
+    </select>
+
+    <insert id="insert" parameterType="com.eduforge.training.pojo.Role">
+        INSERT INTO role (name, code, description, status, create_time, update_time)
+        VALUES (#{name}, #{code}, #{description}, #{status}, NOW(), NOW())
+    </insert>
+
+    <update id="update" parameterType="com.eduforge.training.pojo.Role">
+        UPDATE role SET name = #{name}, code = #{code}, description = #{description},
+               status = #{status}, update_time = NOW() WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM role WHERE id = #{id}
+    </delete>
+
+    <select id="findByUserId" resultType="com.eduforge.training.pojo.Role">
+        SELECT r.* FROM role r
+        JOIN sys_user_role ur ON r.id = ur.role_id
+        WHERE ur.user_id = #{userId} AND r.status = 1
+    </select>
+
+    <select id="findPermissionsByRoleId" resultType="com.eduforge.training.pojo.Permission">
+        SELECT p.* FROM permission p
+        JOIN role_permission rp ON p.id = rp.permission_id
+        WHERE rp.role_id = #{roleId} AND p.status = 1
+    </select>
+</mapper>
