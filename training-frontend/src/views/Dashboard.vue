@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { getCoursesApi, getMyEnrollmentsApi, getExamRecordsApi } from '../api'
+import { getCoursesApi, getMyEnrollmentsApi, getExamRecordsApi, getCurrentUserApi } from '../api'
 import { BookOpen, Users, FileText, ClipboardList, PlusCircle, Clock, GraduationCap, Calendar, ArrowRight, PlayCircle, Award, ChevronRight } from 'lucide-vue-next'
 import type { Course, CourseEnroll } from '../types'
 
+const cachedUser = localStorage.getItem('user')
 const currentUser = ref({
-  name: localStorage.getItem('userName') || '管理员',
+  name: (cachedUser ? JSON.parse(cachedUser).name : '') || '管理员',
   avatar: ''
 })
 
@@ -28,11 +29,19 @@ const recentActivities = ref<{ type: string; title: string; time: string; icon: 
 
 onMounted(async () => {
   try {
-    const [coursesRes, enrollsRes, recordsRes] = await Promise.all([
+    const [coursesRes, enrollsRes, recordsRes, meRes] = await Promise.all([
       getCoursesApi(),
       getMyEnrollmentsApi(),
-      getExamRecordsApi()
+      getExamRecordsApi(),
+      getCurrentUserApi()
     ])
+
+    currentUser.value = {
+      name: meRes.data.name || meRes.data.username,
+      avatar: meRes.data.avatar || ''
+    }
+    localStorage.setItem('user', JSON.stringify(meRes.data))
+    localStorage.setItem('userName', meRes.data.name)
     
     myLearningProgress.value = enrollsRes.data.slice(0, 3)
     recommendedCourses.value = coursesRes.data.slice(0, 6)

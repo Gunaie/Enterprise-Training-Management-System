@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { getCurrentUserApi } from '../api'
 import {
   LayoutDashboard,
   BookOpen,
@@ -18,10 +19,18 @@ const route = useRoute()
 const collapsed = ref(false)
 const user = ref<any>(null)
 
-onMounted(() => {
+onMounted(async () => {
   const userStr = localStorage.getItem('user')
   if (userStr) {
     user.value = JSON.parse(userStr)
+  }
+  try {
+    const res = await getCurrentUserApi()
+    user.value = res.data
+    localStorage.setItem('user', JSON.stringify(res.data))
+    localStorage.setItem('userName', res.data.name)
+  } catch (error) {
+    console.error('获取当前用户失败:', error)
   }
 })
 
