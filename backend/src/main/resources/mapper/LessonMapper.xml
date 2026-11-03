@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eduforge.training.mapper.LessonMapper">
+    <select id="findByChapterId" resultType="com.eduforge.training.pojo.Lesson">
+        SELECT id, chapter_id as chapterId, title, video_url as videoUrl, duration, sort_order as sortOrder, is_free as isFree, create_time as createTime
+        FROM lesson WHERE chapter_id = #{chapterId} ORDER BY sort_order
+    </select>
+
+    <insert id="insert">
+        INSERT INTO lesson (chapter_id, title, video_url, duration, sort_order, is_free)
+        VALUES (#{chapterId}, #{title}, #{videoUrl}, #{duration}, #{sortOrder}, #{isFree})
+    </insert>
+
+    <update id="update">
+        UPDATE lesson SET title = #{title}, video_url = #{videoUrl}, duration = #{duration},
+        sort_order = #{sortOrder}, is_free = #{isFree} WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM lesson WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByChapterId">
+        DELETE FROM lesson WHERE chapter_id = #{chapterId}
+    </delete>
+
+    <select id="countByCourseId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM lesson l JOIN chapter c ON l.chapter_id = c.id WHERE c.course_id = #{courseId}
+    </select>
+</mapper>

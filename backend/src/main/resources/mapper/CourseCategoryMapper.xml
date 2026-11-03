@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eduforge.training.mapper.CourseCategoryMapper">
+    <select id="findAll" resultType="com.eduforge.training.pojo.CourseCategory">
+        SELECT id, name, sort_order as sortOrder FROM course_category ORDER BY sort_order
+    </select>
+</mapper>

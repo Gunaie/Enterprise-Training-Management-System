@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eduforge.training.mapper.ChapterMapper">
+    <select id="findByCourseId" resultType="com.eduforge.training.pojo.Chapter">
+        SELECT id, course_id as courseId, title, sort_order as sortOrder FROM chapter WHERE course_id = #{courseId} ORDER BY sort_order
+    </select>
+
+    <insert id="insert">
+        INSERT INTO chapter (course_id, title, sort_order) VALUES (#{courseId}, #{title}, #{sortOrder})
+    </insert>
+
+    <update id="update">
+        UPDATE chapter SET title = #{title}, sort_order = #{sortOrder} WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM chapter WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByCourseId">
+        DELETE FROM chapter WHERE course_id = #{courseId}
+    </delete>
+</mapper>
