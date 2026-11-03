@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eduforge.training.mapper.ExamMapper">
+    <select id="findByCourseId" resultType="com.eduforge.training.pojo.Exam">
+        SELECT e.*, c.title as courseTitle FROM exam e LEFT JOIN course c ON e.course_id = c.id 
+        <where>
+            <if test="courseId != null">AND e.course_id = #{courseId}</if>
+        </where>
+        ORDER BY e.create_time DESC
+    </select>
+
+    <select id="findById" resultType="com.eduforge.training.pojo.Exam">
+        SELECT e.*, c.title as courseTitle FROM exam e LEFT JOIN course c ON e.course_id = c.id WHERE e.id = #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO exam (title, course_id, duration, total_score, pass_score, status) VALUES (#{title}, #{courseId}, #{duration}, #{totalScore}, #{passScore}, #{status})
+    </insert>
+
+    <update id="update">
+        UPDATE exam SET title = #{title}, course_id = #{courseId}, duration = #{duration}, total_score = #{totalScore}, pass_score = #{passScore}, status = #{status} WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM exam WHERE id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eduforge.training.mapper.ExamRecordMapper">
+    <select id="findByUserId" resultType="com.eduforge.training.pojo.ExamRecord">
+        SELECT er.*, e.title as examTitle, e.total_score as totalScore, e.pass_score as passScore FROM exam_record er JOIN exam e ON er.exam_id = e.id WHERE er.user_id = #{userId} ORDER BY er.submit_time DESC
+    </select>
+
+    <select id="findAll" resultType="com.eduforge.training.pojo.ExamRecord">
+        SELECT er.*, e.title as examTitle, e.total_score as totalScore, e.pass_score as passScore, sys_user.name as studentName FROM exam_record er JOIN exam e ON er.exam_id = e.id JOIN sys_user ON er.user_id = sys_user.id ORDER BY er.submit_time DESC
+    </select>
+
+    <select id="findByUserIdAndExamId" resultType="com.eduforge.training.pojo.ExamRecord">
+        SELECT er.* FROM exam_record er WHERE er.user_id = #{userId} AND er.exam_id = #{examId}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO exam_record (exam_id, user_id, answers, score, is_passed) VALUES (#{examId}, #{userId}, #{answers}, #{score}, #{isPassed})
+    </insert>
+
+    <update id="updateScore">
+        UPDATE exam_record SET score = #{score}, is_passed = #{isPassed} WHERE id = #{id}
+    </update>
+
+    <select id="countByExamId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM exam_record WHERE exam_id = #{examId}
+    </select>
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eduforge.training.mapper.ExamQuestionMapper">
+    <insert id="insert">
+        INSERT INTO exam_question (exam_id, question_id, sort_order) VALUES (#{examId}, #{questionId}, #{sortOrder})
+    </insert>
+
+    <delete id="deleteByExamId">
+        DELETE FROM exam_question WHERE exam_id = #{examId}
+    </delete>
+
+    <select id="findQuestionsByExamId" resultType="com.eduforge.training.pojo.Question">
+        SELECT q.* FROM question q JOIN exam_question eq ON q.id = eq.question_id WHERE eq.exam_id = #{examId} ORDER BY eq.sort_order
+    </select>
+</mapper>
