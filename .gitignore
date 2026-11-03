@@ -1,0 +1,29 @@
+# JDK
+*.tar.gz
+
+# Build artifacts
+*.jar
+*.jar.bak
+target/
+
+# Python cache
+__pycache__/
+*.pyc
+.venv/
+
+# IDE
+.idea/
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Uploads (user-generated content)
+uploads/
+
+# Claude config (contains API keys)
+.claude/
+
+# Backup
+*.bak
